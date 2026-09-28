@@ -1,0 +1,76 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>CMPS361 Module 3</title>
+</head>
+
+<body>
+
+    <h1>CMPS361 - Module 3</h1>
+    <h2>API Connection Results</h2>
+
+    <p id="status">Connecting to API...</p>
+
+    <table border="1" cellpadding="10">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Course</th>
+            </tr>
+        </thead>
+
+        <tbody id="studentData">
+        </tbody>
+    </table>
+
+    <script>
+
+        // Connect to our PHP API
+        fetch("api.php")
+
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("API connection failed");
+                }
+
+                return response.json();
+            })
+
+            .then(students => {
+
+                document.getElementById("status").innerText =
+                    "Successfully connected to the API!";
+
+                let output = "";
+
+                students.forEach(student => {
+
+                    output += `
+                        <tr>
+                            <td>${student.id}</td>
+                            <td>${student.name}</td>
+                            <td>${student.course}</td>
+                        </tr>
+                    `;
+
+                });
+
+                document.getElementById("studentData").innerHTML = output;
+
+            })
+
+            .catch(error => {
+
+                document.getElementById("status").innerText =
+                    "Connection failed: " + error.message;
+
+            });
+
+    </script>
+
+</body>
+</html>
